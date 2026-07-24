@@ -1,22 +1,25 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "../globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import type { Metadata } from 'next';
+import './globals.css';
+import { RoleProvider } from '@/context/RoleContext';
+import { AssignmentProvider } from '@/context/AssignmentContext';
+import { ChatWidget } from '@/components/ChatWidget';
 
 export const metadata: Metadata = {
-  title: "Tax Platform",
-  description: "AI-powered tax platform case study",
+  title: 'Clearline — Tax Platform',
+  description: 'AI-powered tax platform case study prototype',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className="h-full">
+      <body className="h-full antialiased">
+        <RoleProvider>
+          <AssignmentProvider>
+            {children}
+            <ChatWidget />
+          </AssignmentProvider>
+        </RoleProvider>
+      </body>
     </html>
   );
 }
