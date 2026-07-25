@@ -8,9 +8,11 @@ import { prioritizeReturns } from '@/lib/priority';
 import { StatusBadge } from '@/components/StatusBadge';
 import { StatusTimeline } from '@/components/StatusTimeline';
 import { ROLE_LABELS, CLIENT_ROLES, type ActionOwner } from '@/types';
+import { ExplainRequestButton } from '@/components/ExplainRequestButton';
 import { AlertTriangle, ArrowRight } from 'lucide-react';
 
 const OWNER_BY_ROLE: Record<string, ActionOwner | null> = {
+  preparer: 'preparer',
   employee: 'preparer',
   reviewer: 'reviewer',
   admin: null,
@@ -53,6 +55,7 @@ export default function DashboardPage() {
             <div>
               <p className="font-medium text-amber-900">Action needed: {myReturn.blockingIssue}</p>
               <p className="text-sm text-amber-800 mt-0.5">{myReturn.nextAction.label}</p>
+              <ExplainRequestButton title={myReturn.nextAction.label} context={myReturn.blockingIssue ?? ''} />
             </div>
           </div>
         )}

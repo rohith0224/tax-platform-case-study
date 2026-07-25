@@ -9,7 +9,7 @@ import { Breadcrumbs } from '@/components/shell/Breadcrumbs';
 import { StatusBadge } from '@/components/StatusBadge';
 import { StatusTimeline } from '@/components/StatusTimeline';
 import { RelatedPanel } from '@/components/RelatedPanel';
-import { AssignEmployee } from '@/components/AssignEmployee';
+import { AssignPreparer } from '@/components/AssignPreparer';
 import { STATUS_META, daysUntil } from '@/lib/status';
 import { CLIENT_ROLES } from '@/types';
 import { AlertTriangle, FileSearch, MessagesSquare } from 'lucide-react';
@@ -65,9 +65,9 @@ export default function ReturnDetailPage() {
           {!isClientAudience && (
             <div className="rounded-xl border border-slate-200 bg-white p-4 grid grid-cols-3 gap-4 text-sm">
               <div>
-                <p className="text-slate-400 mb-0.5">Assigned employee</p>
+                <p className="text-slate-400 mb-0.5">Assigned preparer</p>
                 {activeRole === 'admin' ? (
-                  <AssignEmployee taxReturn={taxReturn} />
+                  <AssignPreparer taxReturn={taxReturn} />
                 ) : (
                   <p className="font-medium text-slate-900">{effectivePreparer(taxReturn, overrides).name}</p>
                 )}

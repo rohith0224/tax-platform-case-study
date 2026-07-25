@@ -1,20 +1,24 @@
 /**
- * Five roles: Client and Business Owner cover the two kinds of taxpayers;
- * Employee covers general firm staff (what used to be split into Preparer
- * and Seasonal Staff); Reviewer stays distinct since second-review is a
- * meaningfully different function; Admin sees everything.
+ * Six roles: Client and Business Owner cover the two kinds of taxpayers;
+ * Preparer is staff formally responsible for preparing returns (the only
+ * role offered as a new assignment target in the Admin's reassign picker);
+ * Employee is general firm staff — may already own returns from existing
+ * data, but isn't offered as a *new* assignment target; Reviewer stays
+ * distinct since second-review is a meaningfully different function;
+ * Admin sees everything.
  */
-export type UserRole = 'client' | 'business_owner' | 'employee' | 'reviewer' | 'admin';
+export type UserRole = 'client' | 'business_owner' | 'preparer' | 'employee' | 'reviewer' | 'admin';
 
 export const ROLE_LABELS: Record<UserRole, string> = {
   client: 'Client',
   business_owner: 'Business Owner',
+  preparer: 'Preparer',
   employee: 'Employee',
   reviewer: 'Reviewer',
   admin: 'Firm Admin',
 };
 
-export const STAFF_ROLES: UserRole[] = ['employee', 'reviewer', 'admin'];
+export const STAFF_ROLES: UserRole[] = ['preparer', 'employee', 'reviewer', 'admin'];
 export const CLIENT_ROLES: UserRole[] = ['client', 'business_owner'];
 
 export type Team = 'Prep Team' | 'Review Team' | 'Admin Team';
@@ -23,7 +27,7 @@ export interface DemoUser {
   id: string;
   name: string;
   roles: UserRole[];
-  /** cosmetic team label shown next to staff, e.g. in the assign-to-employee picker */
+  /** cosmetic team label shown next to staff, e.g. in the assign-to-preparer picker */
   team?: Team;
   /** returnId owned personally by this user, even if their primary role is staff */
   personalReturnId?: string;

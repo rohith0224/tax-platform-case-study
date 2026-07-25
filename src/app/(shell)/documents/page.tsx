@@ -6,9 +6,10 @@ import { useRole } from '@/context/RoleContext';
 import { useAssignments } from '@/context/AssignmentContext';
 import { allDocuments, getReturnsForRole } from '@/mocks/data';
 import { Breadcrumbs } from '@/components/shell/Breadcrumbs';
-import { CLIENT_ROLES, type DocumentType } from '@/types';
-import { Search, FileText, ChevronDown, ChevronRight } from 'lucide-react';
+import { CLIENT_ROLES, type DocumentType, type UserRole } from '@/types';
+import { Search, FileText, ChevronDown, ChevronRight, UploadCloud } from 'lucide-react';
 
+const UPLOAD_ROLES: UserRole[] = ['preparer', 'employee', 'admin', 'business_owner'];
 const PAGE_SIZE = 20;
 const STATUS_STYLE: Record<string, string> = {
   processed: 'bg-emerald-50 text-emerald-700',
@@ -75,7 +76,17 @@ export default function DocumentsPage() {
   return (
     <div>
       <Breadcrumbs items={[{ label: 'Dashboard', href: '/' }, { label: 'Documents' }]} />
-      <h1 className="text-2xl font-bold text-slate-900 mb-1">Documents</h1>
+      <div className="flex items-start justify-between gap-4 mb-1">
+        <h1 className="text-2xl font-bold text-slate-900">Documents</h1>
+        {UPLOAD_ROLES.includes(activeRole) && (
+          <Link
+            href="/documents/upload"
+            className="flex shrink-0 items-center gap-1.5 rounded-lg bg-teal-700 px-3 py-2 text-sm font-medium text-white hover:bg-teal-800"
+          >
+            <UploadCloud className="h-4 w-4" /> Upload &amp; Extract
+          </Link>
+        )}
+      </div>
       <p className="text-slate-500 mb-4">{filtered.length} of {scoped.length} documents</p>
 
       <div className="flex flex-wrap items-center gap-2 mb-4">

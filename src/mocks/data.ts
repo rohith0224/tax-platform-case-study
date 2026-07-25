@@ -12,23 +12,23 @@ import type {
 } from '@/types';
 
 // ---------------------------------------------------------------------------
-// Demo users — deliberately covers all five roles plus a dual-role staffer
-// (Alex is both an Employee AND has a personal return in the system) and a
+// Demo users — deliberately covers all six roles plus a dual-role staffer
+// (Alex is both a Preparer AND has a personal return in the system) and a
 // brand-new, first-login client (Sam) for the onboarding flow.
 // ---------------------------------------------------------------------------
 export const demoUsers: DemoUser[] = [
   { id: 'U_JANE', name: 'Jane Smith', roles: ['client'] },
   { id: 'U_CAROL', name: 'Carol Davis', roles: ['business_owner'] },
-  { id: 'U_ALEX', name: 'Alex Chen', roles: ['employee', 'client'], team: 'Prep Team', personalReturnId: 'R_ALEX' },
+  { id: 'U_ALEX', name: 'Alex Chen', roles: ['preparer', 'client'], team: 'Prep Team', personalReturnId: 'R_ALEX' },
   { id: 'U_SARAH', name: 'Sarah Johnson', roles: ['reviewer'], team: 'Review Team' },
   { id: 'U_MIKE', name: 'Mike Davis', roles: ['admin'], team: 'Admin Team' },
-  { id: 'U_PRIYA', name: 'Priya Patel', roles: ['employee'], team: 'Prep Team' },
+  { id: 'U_PRIYA', name: 'Priya Patel', roles: ['employee'] },
   { id: 'U_SAM', name: 'Sam Rivera', roles: ['client'], isFirstLogin: true },
 ];
 
-/** Employees an admin can assign a client/return to. */
-export function getAssignableEmployees(): DemoUser[] {
-  return demoUsers.filter((u) => u.roles.includes('employee'));
+/** Preparers an admin can assign a client/return to. Employees may already own returns from seed data but aren't offered as a new assignment target. */
+export function getAssignablePreparers(): DemoUser[] {
+  return demoUsers.filter((u) => u.roles.includes('preparer'));
 }
 
 export function getUserById(id: string): DemoUser | undefined {
@@ -352,7 +352,7 @@ export const heroThreads: MessageThread[] = [
         threadId: 'T001',
         authorId: 'U_ALEX',
         authorName: 'Alex Chen',
-        authorRole: 'employee',
+        authorRole: 'preparer',
         body: "Hi Jane — I see wages from Contoso, but your prior-year return also had a W-2 from Meridian Retail. Could you upload that one when you get a chance? It's the last document I need to finish your draft.",
         timestamp: '2026-07-12T15:04:00Z',
         internal: false,
@@ -393,7 +393,7 @@ export const heroThreads: MessageThread[] = [
         threadId: 'T002',
         authorId: 'U_ALEX',
         authorName: 'Alex Chen',
-        authorRole: 'employee',
+        authorRole: 'preparer',
         body: "Good catch, I'll go through the statement manually today and adjust the field before it moves back to you.",
         timestamp: '2026-07-14T11:30:00Z',
         internal: true,
@@ -550,6 +550,8 @@ export function getReturnsForRole(
   }
   if (role === 'admin') return allReturns;
   if (role === 'reviewer') return allReturns.filter((r) => r.reviewerId === user.id);
-  // employee: sees what they're currently assigned to prepare (including reassignments)
+  // preparer / employee: both see what they're currently assigned to prepare
+  // (including reassignments) — only Preparer shows up as a *new* assignment
+  // target in the Admin's picker, see getAssignablePreparers() above.
   return allReturns.filter((r) => effectivePreparer(r, overrides).id === user.id);
 }

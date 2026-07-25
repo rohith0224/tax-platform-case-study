@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { FileText, ListChecks, MessagesSquare } from 'lucide-react';
 import { getDocumentsByReturn, getTasksByReturn, getThreadsByReturn } from '@/mocks/data';
+import { ExplainRequestButton } from '@/components/ExplainRequestButton';
 
 interface RelatedPanelProps {
   returnId: string;
@@ -49,6 +50,7 @@ export function RelatedPanel({ returnId, currentId }: RelatedPanelProps) {
             <li key={t.id} className={`rounded-md px-2 py-1.5 text-sm ${t.id === currentId ? 'bg-teal-50 font-medium text-teal-800' : 'text-slate-600'}`}>
               {t.title}
               <span className="ml-1.5 text-xs text-slate-400">· {t.owner}</span>
+              {t.owner === 'client' && <ExplainRequestButton title={t.title} />}
             </li>
           ))}
           {tasks.length === 0 && <li className="px-2 text-sm text-slate-400">No open tasks</li>}

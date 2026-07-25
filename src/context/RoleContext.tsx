@@ -20,7 +20,7 @@ const STORAGE_KEY = 'tax-platform-demo-persona';
 
 export function RoleProvider({ children }: { children: React.ReactNode }) {
   const [userId, setUserId] = useState('U_ALEX');
-  const [activeRole, setActiveRole] = useState<UserRole>('employee');
+  const [activeRole, setActiveRole] = useState<UserRole>('preparer');
   const [onboarded, setOnboarded] = useState<Set<string>>(new Set());
 
   useEffect(() => {

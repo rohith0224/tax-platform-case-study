@@ -7,7 +7,7 @@ import { useAssignments } from '@/context/AssignmentContext';
 import { getReturnsForRole, effectivePreparer } from '@/mocks/data';
 import { StatusBadge } from '@/components/StatusBadge';
 import { Breadcrumbs } from '@/components/shell/Breadcrumbs';
-import { AssignEmployee } from '@/components/AssignEmployee';
+import { AssignPreparer } from '@/components/AssignPreparer';
 import { daysUntil } from '@/lib/status';
 import { STATUS_META } from '@/lib/status';
 import type { ReturnStatus } from '@/types';
@@ -72,7 +72,7 @@ export default function ReturnsPage() {
             <tr>
               <th className="px-4 py-2.5 font-medium">Client</th>
               <th className="px-4 py-2.5 font-medium">Status</th>
-              <th className="px-4 py-2.5 font-medium">Assigned employee</th>
+              <th className="px-4 py-2.5 font-medium">Assigned preparer</th>
               <th className="px-4 py-2.5 font-medium">Due</th>
               <th className="px-4 py-2.5 font-medium">Progress</th>
             </tr>
@@ -90,7 +90,7 @@ export default function ReturnsPage() {
                   </td>
                   <td className="px-4 py-2.5"><StatusBadge status={r.status} /></td>
                   <td className="px-4 py-2.5 text-slate-600">
-                    {activeRole === 'admin' ? <AssignEmployee taxReturn={r} /> : effectivePreparer(r, overrides).name}
+                    {activeRole === 'admin' ? <AssignPreparer taxReturn={r} /> : effectivePreparer(r, overrides).name}
                   </td>
                   <td className={`px-4 py-2.5 ${due < 0 ? 'text-red-600 font-medium' : 'text-slate-600'}`}>
                     {due < 0 ? `${Math.abs(due)}d overdue` : `${due}d`}

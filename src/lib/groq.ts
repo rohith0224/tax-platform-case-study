@@ -152,3 +152,99 @@ export async function summarizeDocument(docName: string, docType: string, docCon
     sources,
   };
 }
+
+export interface ExplainRequestResult {
+  explanation: string;
+  sources: RetrievedSnippet[];
+}
+
+/**
+ * Educates a client on a specific request (usually "upload document X") —
+ * what it is and why the firm needs it — instead of leaving them to just
+ * trust an instruction with no context.
+ */
+export async function explainRequest(requestTitle: string, context: string): Promise<ExplainRequestResult> {
+  const sources = retrieve(requestTitle, 2);
+
+  const completion = await client.chat.completions.create({
+    model: MODEL,
+    max_tokens: 150,
+    temperature: 0.3,
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You explain, in warm plain English, why a tax preparation firm is asking a client to do something — usually upload a specific document. ' +
+          'Explain what the document/information actually is, and why it matters for completing their return. 2-3 short sentences, reassuring tone, no jargon, no disclaimers. ' +
+          INJECTION_GUARD +
+          knowledgeBlock(sources),
+      },
+      {
+        role: 'user',
+        content: wrapUserContent(`Request: "${requestTitle}"${context ? `\nContext: ${context}` : ''}`),
+      },
+    ],
+  });
+
+  return {
+    explanation: completion.choices[0]?.message?.content?.trim() ?? 'No explanation available.',
+    sources,
+  };
+}
+
+export interface ExtractedKeyField {
+  label: string;
+  value: string;
+}
+
+export interface PdfExtractionResult {
+  documentType: string;
+  keyFields: ExtractedKeyField[];
+  summary: string;
+  sources: RetrievedSnippet[];
+}
+
+/**
+ * Unlike the other AI calls in this file, this one runs on REAL extracted
+ * text (see src/lib/pdfExtract.ts — genuine PDF parsing via unpdf, not
+ * fabricated). This is the one place in the app where the whole pipeline is
+ * real end to end: real file -> real text extraction -> real model call.
+ */
+export async function extractKeyInfoFromPdfText(rawText: string, fileName: string): Promise<PdfExtractionResult> {
+  const sources = retrieve(rawText.slice(0, 300), 3);
+
+  const completion = await client.chat.completions.create({
+    model: MODEL,
+    max_tokens: 600,
+    temperature: 0.2,
+    response_format: { type: 'json_object' },
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You are extracting the important information out of a raw-text dump of an uploaded document on a tax platform. The text below was pulled straight from a PDF by a real parser, so it may include OCR noise, odd line breaks, or repeated headers/footers — ignore that noise. ' +
+          'Identify what kind of document this is, then pull out only the data points a preparer would actually care about (amounts, dates, names, ID/account numbers, employer/payer names) as clean label/value pairs — skip boilerplate legal text, form instructions, and anything not a concrete data point. ' +
+          'Return strict JSON: {"documentType": string (short, e.g. "W-2" or "Invoice" or "Bank Statement" or "Unknown"), "keyFields": [{"label": string, "value": string}] (5-15 items, most important first), "summary": string (1-2 sentences)}. ' +
+          'If the text is too garbled or short to make sense of, say so honestly in "summary" and return whatever partial fields you can find rather than inventing data. ' +
+          INJECTION_GUARD +
+          knowledgeBlock(sources),
+      },
+      {
+        role: 'user',
+        content: wrapUserContent(`Filename: ${fileName}\n\nExtracted text:\n${rawText}`),
+      },
+    ],
+  });
+
+  try {
+    const parsed = JSON.parse(completion.choices[0]?.message?.content ?? '{}');
+    return {
+      documentType: typeof parsed.documentType === 'string' ? parsed.documentType : 'Unknown',
+      keyFields: Array.isArray(parsed.keyFields) ? parsed.keyFields : [],
+      summary: typeof parsed.summary === 'string' ? parsed.summary : 'No summary available.',
+      sources,
+    };
+  } catch {
+    return { documentType: 'Unknown', keyFields: [], summary: 'Could not parse the model response.', sources };
+  }
+}
