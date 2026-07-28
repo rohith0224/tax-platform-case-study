@@ -5,7 +5,9 @@ import { retrieve } from '@/lib/retrieval';
 import { checkRateLimit } from '@/lib/rateLimit';
 import { sanitizeText, wrapUserContent } from '@/lib/promptSafety';
 
-const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
+// See src/lib/groq.ts for why this falls back to a placeholder instead of
+// letting the SDK throw when the key is unset (would otherwise crash the build).
+const client = new Groq({ apiKey: process.env.GROQ_API_KEY || 'unset' });
 const MODEL = 'llama-3.3-70b-versatile';
 
 const MAX_MESSAGES = 20;

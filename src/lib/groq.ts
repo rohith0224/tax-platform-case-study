@@ -2,7 +2,12 @@ import Groq from 'groq-sdk';
 import { retrieve, type RetrievedSnippet } from './retrieval';
 import { INJECTION_GUARD, wrapUserContent } from './promptSafety';
 
-const client = new Groq({ apiKey: process.env.GROQ_API_KEY });
+// Falls back to a placeholder instead of letting the SDK throw at construction
+// time when the key is unset — that constructor runs at module load, which
+// happens during Next.js's build-time page-data collection, outside any
+// try/catch in the route handlers. A missing key should degrade AI calls
+// gracefully at request time (already handled below), not fail the build.
+const client = new Groq({ apiKey: process.env.GROQ_API_KEY || 'unset' });
 
 const MODEL = 'llama-3.3-70b-versatile';
 

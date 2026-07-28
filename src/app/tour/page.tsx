@@ -16,7 +16,7 @@ const STOPS: Stop[] = [
   {
     n: '01',
     title: 'Source Document Traceability',
-    tagline: 'Trace every number on the return back to its source.',
+    tagline: 'See exactly where every number on the return came from.',
     detail: 'Click any extracted value to see its source document highlighted — down to the exact page and region, plus the calculation trail for anything that isn’t a direct copy.',
     image: '01-traceability.png',
     cta: { label: 'Review Bob Johnson’s return', href: '/returns/R002/review' },
@@ -24,7 +24,7 @@ const STOPS: Stop[] = [
   {
     n: '02',
     title: 'Client & CPA Collaboration',
-    tagline: 'Unify fragmented communication around documents and issues.',
+    tagline: 'Conversations stay attached to the document or issue they’re about.',
     detail: 'Messages are tied to specific documents and tasks. Internal firm notes are visibly marked and structurally excluded from anything a client persona can load — not just hidden with CSS.',
     image: '02-collaboration.png',
     cta: { label: 'Open the internal thread on R002', href: '/returns/R002/messages' },
@@ -32,7 +32,7 @@ const STOPS: Stop[] = [
   {
     n: '03',
     title: 'Where to Start',
-    tagline: 'A first-time user knows their next action within 10 seconds.',
+    tagline: 'New clients get one clear next step, not a wall of navigation.',
     detail: 'A brand-new client is dropped straight into a focused, three-step flow — no sidebar, no dashboard, one task at a time — instead of the full product on day one.',
     image: '03-onboarding.png',
     cta: { label: 'Switch to Sam Rivera to see it live', href: '/' },
@@ -41,7 +41,7 @@ const STOPS: Stop[] = [
   {
     n: '04',
     title: 'Getting Lost in the App',
-    tagline: 'Navigation that preserves context across connected objects.',
+    tagline: 'Never lose your place moving between documents, tasks, and messages.',
     detail: 'Breadcrumbs use real names, not IDs, and the Related panel keeps every document, open task, and thread on a return one click away, no matter where you navigated in from.',
     image: '04-navigation.png',
     cta: { label: 'Open Jane Smith’s return', href: '/returns/R001' },
@@ -49,15 +49,15 @@ const STOPS: Stop[] = [
   {
     n: '05',
     title: 'Role-Aware Experiences',
-    tagline: 'One product, six roles, no confusion.',
-    detail: 'Same shell, same components — completely different sidebar, dashboard, and permissions depending on who’s logged in. Compare this client view against the staff dashboard in stop 07.',
+    tagline: 'The same product, reshaped for whoever’s using it.',
+    detail: 'Same shell, same components — completely different sidebar, dashboard, and permissions depending on who’s logged in. Compare this client view against the dashboard further down the page.',
     image: '05-roles.png',
     cta: { label: 'Compare personas from the avatar menu', href: '/' },
   },
   {
     n: '06',
     title: 'Return Status & Progress',
-    tagline: 'Statuses everyone interprets the same way.',
+    tagline: 'A status everyone reads the same way, client and staff alike.',
     detail: 'One status field, two renderings: a five-stage plain-English timeline for clients, a detailed status badge for staff — always in sync, never two sources of truth.',
     image: '06-status.png',
     cta: { label: 'View as Jane Smith', href: '/returns/R001' },
@@ -65,7 +65,7 @@ const STOPS: Stop[] = [
   {
     n: '07',
     title: 'An Actionable Dashboard',
-    tagline: 'Answer "what should I work on right now?"',
+    tagline: 'Always know what to work on next.',
     detail: 'Returns ranked by a real scoring function — overdue beats blocked beats "it’s your turn" beats due-this-week — not just sorted by date.',
     image: '07-dashboard.png',
     cta: { label: 'View the Preparer dashboard', href: '/' },
@@ -73,7 +73,7 @@ const STOPS: Stop[] = [
   {
     n: '08',
     title: 'Clickable vs. Editable',
-    tagline: 'A consistent system for interaction affordances.',
+    tagline: 'One consistent way to tell what you can touch, and what you can’t.',
     detail: 'One component, six states — editable, AI-extracted, verified, flagged, locked, pending approval — used identically on this legend page and on the live review screen.',
     image: '08-affordances.png',
     cta: { label: 'Open the Interaction Guide', href: '/design-system' },
@@ -81,7 +81,7 @@ const STOPS: Stop[] = [
   {
     n: '09',
     title: 'Complexity Made Navigable',
-    tagline: 'Deep professional work that stays approachable.',
+    tagline: 'Hundreds of documents, still easy to find what you need.',
     detail: 'Around 260 generated documents, with search, a type filter, and collapsible group-by-client — proving the pattern holds at volume, not just against five demo rows.',
     image: '09-scale.png',
     cta: { label: 'Browse all documents', href: '/documents' },
@@ -89,7 +89,7 @@ const STOPS: Stop[] = [
   {
     n: '10',
     title: 'Trustworthy AI',
-    tagline: 'Transparency that builds confidence without overload.',
+    tagline: 'AI you can actually verify, not just trust blindly.',
     detail: 'A live Groq call reasons over the return’s data, grounded by a retrieval step over a small knowledge base — sources shown, confidence scored, and nothing applies without a human confirming it.',
     image: '10-trustworthy-ai.png',
     cta: { label: 'Generate live review notes', href: '/returns/R002/review' },
@@ -104,10 +104,10 @@ export default function TourPage() {
           <div className="flex items-center gap-2 text-sm font-semibold text-slate-900">
             <Waypoints className="h-5 w-5 text-teal-700" /> Clearline
           </div>
-          <h1 className="mt-4 text-3xl font-bold text-slate-900">Challenge Guide</h1>
+          <h1 className="mt-4 text-3xl font-bold text-slate-900">Product Walkthrough</h1>
           <p className="mt-2 max-w-2xl text-slate-500">
-            Every one of the case study&apos;s 10 challenges, mapped to the exact screen that solves it. Screenshots
-            below are captured live from the running app — not mockups. Click through to try each one yourself.
+            A tour through Clearline&apos;s core screens, one at a time. Screenshots below are captured live from the
+            running app — not mockups. Click through to try each one yourself.
           </p>
         </div>
       </header>
@@ -155,7 +155,7 @@ export default function TourPage() {
       </main>
 
       <footer className="border-t border-slate-200 py-8 text-center text-xs text-slate-400">
-        Clearline — AI Tax Platform Case Study
+        Clearline — AI-Powered Tax Platform
       </footer>
     </div>
   );
